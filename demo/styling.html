@@ -32,6 +32,23 @@
 
     <demo-snippet>
       <template>
+        <dom-module id="text-field-colored" theme-for="vaadin-text-field">
+          <template>
+            <style>
+              [part~="value"] {
+                background-color: #26a3a3;
+                color: #fff;
+              }
+            </style>
+          </template>
+        </dom-module>
+
+        <vaadin-text-field value="Stylable input"></vaadin-text-field>
+      </template>
+    </demo-snippet>
+
+    <demo-snippet>
+      <template>
         <dom-module id="text-field-styles" theme-for="vaadin-text-field">
           <template>
             <style>
