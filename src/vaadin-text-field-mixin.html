@@ -345,6 +345,29 @@ This program is available under Apache License Version 2.0, available at https:/
       return (!this._getActiveErrorId(invalid, errorMessage, errorId)).toString();
     }
 
+    setSelectionRange(start, end, direction) {
+      this.focusElement.focus();
+      this.focusElement.setSelectionRange(start, end, direction);
+    }
+
+    selectAll() {
+      this.setSelectionRange(0, this.value.length);
+    }
+
+    clearSelection() {
+      this.setSelectionRange(0, 0);
+    }
+
+    copyToClipboard() {
+      this.focusElement.focus();
+      document.execCommand('copy');
+    }
+
+    cutToClipboard() {
+      this.focusElement.focus();
+      document.execCommand('cut');
+    }
+
     /**
      * @protected
      */
