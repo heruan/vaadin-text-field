@@ -36,7 +36,7 @@ This program is available under Apache License Version 2.0, available at https:/
         width: var(--vaadin-text-field-default-width, 12em);
       }
 
-      [part="label"]:empty {
+      :host(:not([has-label])) [part="label"] {
         display: none;
       }
 
@@ -272,11 +272,22 @@ This program is available under Apache License Version 2.0, available at https:/
       }
     }
 
-    _labelChanged(label) {
-      if (label !== '' && label != null) {
+    _labelChanged() {
+      if (this._hasLabel()) {
         this.setAttribute('has-label', '');
       } else {
         this.removeAttribute('has-label');
+      }
+    }
+
+    _hasLabel() {
+      const assignedNodes = this.root.querySelector('slot[name="label"]').assignedNodes();
+      if (assignedNodes.length > 0) {
+        // Firefox returns the fallback text node as assigned, so we there is a label
+        // if the first assigned node is not a text node or if its value is not empty
+        return assignedNodes[0].nodeType != Node.TEXT_NODE || assignedNodes[0].nodeValue !== '';
+      } else {
+        return this.label !== '' && this.label != null;
       }
     }
 
@@ -302,6 +313,8 @@ This program is available under Apache License Version 2.0, available at https:/
       var uniqueId = Vaadin.TextFieldMixin._uniqueId = 1 + Vaadin.TextFieldMixin._uniqueId || 0;
       this._errorId = `${this.constructor.is}-error-${uniqueId}`;
       this._labelId = `${this.constructor.is}-label-${uniqueId}`;
+
+      this.root.querySelector('slot[name="label"]').addEventListener('slotchange', this._labelChanged.bind(this));
 
       if (navigator.userAgent.match(/Trident/)) {
         this._addIEListeners();
