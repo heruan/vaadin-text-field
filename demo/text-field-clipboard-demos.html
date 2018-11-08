@@ -1,0 +1,61 @@
+<link rel="import" href="../../vaadin-button/vaadin-button.html">
+
+<dom-module id="text-field-clipboard-demos">
+  <template>
+    <style include="vaadin-component-demo-shared-styles">
+      :host {
+        display: block;
+      }
+    </style>
+
+
+    <h3>Write to clipboard</h3>
+    <vaadin-demo-snippet id="text-field-clipboard-demos-write">
+      <template preserve-content>
+        <vaadin-text-field id="copyField" value="Lorem ipsum">
+          <vaadin-button id="copyButton" slot="prefix" theme="small tertiary">Copy</vaadin-button>
+        </vaadin-text-field>
+        <span id="copiedText"></span>
+
+        <script>
+          window.addDemoReadyListener('#text-field-clipboard-demos-write', function(document) {
+            const field = document.getElementById('copyField');
+            const button = document.getElementById('copyButton');
+            const span = document.getElementById('copiedText');
+            button.addEventListener('click', event => field.writeToClipboard(0, field.value.length));
+            field.addEventListener('clipboard-write', event => {
+              span.innerText = 'Copied to clipboard: ' + event.detail.text;
+            });
+          });
+        </script>
+      </template>
+    </vaadin-demo-snippet>
+
+    <h3>Paste from clipboard</h3>
+    <vaadin-demo-snippet id="text-field-clipboard-demos-paste">
+      <template preserve-content>
+        <vaadin-text-field id="pasteField">
+          <vaadin-button id="pasteButton" slot="prefix" theme="small tertiary">Paste</vaadin-button>
+        </vaadin-text-field>
+
+        <script>
+          window.addDemoReadyListener('#text-field-clipboard-demos-paste', function(document) {
+            const field = document.getElementById('pasteField');
+            const button = document.getElementById('pasteButton');
+            button.addEventListener('click', event => field.readFromClipboard(0, field.value.length));
+          });
+        </script>
+      </template>
+    </vaadin-demo-snippet>
+
+
+  </template>
+  <script>
+    class TextFieldClipboardDemos extends DemoReadyEventEmitter(TextFieldDemo(Polymer.Element)) {
+      static get is() {
+        return 'text-field-clipboard-demos';
+      }
+    }
+    customElements.define(TextFieldClipboardDemos.is, TextFieldClipboardDemos);
+  </script>
+</dom-module>

@@ -80,6 +80,16 @@
         "description": "",
         "image": ""
       }
+    },
+    {
+      "name": "Clipboard",
+      "url": "text-field-clipboard-demos",
+      "src": "text-field-clipboard-demos.html",
+      "meta": {
+        "title": "Vaadin Text Field clipboard read/write",
+        "description": "",
+        "image": ""
+      }
     }
   ]
 }

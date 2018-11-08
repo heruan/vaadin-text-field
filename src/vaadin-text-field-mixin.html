@@ -376,6 +376,30 @@ This program is available under Apache License Version 2.0, available at https:/
     }
 
     /**
+     * Write a specific range of text to the clipboard.
+     *
+     * @param {number} start     The 0-based index of the first range character
+     * @param {number} end       The 0-based index of the character after the last range character
+     */
+    writeToClipboard(start, end) {
+      const text = this.value.substring(start, end);
+      navigator.clipboard.writeText(text)
+        .then(() => this.dispatchEvent(new CustomEvent('clipboard-write', {detail: {text}})));
+    }
+
+    /**
+     * Replace a specific range of text with content present in the clipboard.
+     *
+     * @param {number} start     The 0-based index of the first range character
+     * @param {number} end       The 0-based index of the character after the last range character
+     */
+    readFromClipboard(start, end) {
+      navigator.clipboard.readText().then(text => {
+        this.value = this.value.substring(0, start) + text + this.value.substring(end + this.value.length);
+      });
+    }
+
+    /**
      * Fired when the user commits a value change.
      *
      * @event change
